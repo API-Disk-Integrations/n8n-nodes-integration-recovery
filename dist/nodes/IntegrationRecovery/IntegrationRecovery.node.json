@@ -1,0 +1,10 @@
+{
+  "node": "n8n-nodes-integration-recovery.integrationRecovery",
+  "nodeVersion": "1.0",
+  "codexVersion": "1.0",
+  "categories": ["Development", "Utility"],
+  "resources": {
+    "credentialDocumentation": [{"url": "https://integrationrecovery-api.com/docs"}],
+    "primaryDocumentation": [{"url": "https://integrationrecovery-api.com/docs"}]
+  }
+}

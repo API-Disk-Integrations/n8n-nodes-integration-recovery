@@ -1,0 +1,43 @@
+{
+  "name": "n8n-nodes-integration-recovery",
+  "version": "0.0.1-local.1",
+  "description": "Action-only n8n node for Integration Recovery drift checks and repair-plan retrieval.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE", "THREAT_MODEL.md", "ROLLBACK.md"],
+  "scripts": {
+    "build": "n8n-node build",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "test": "node --test test/*.test.mjs",
+    "prepack": "npm run build && npm run lint && npm test"
+  },
+  "keywords": ["n8n-community-node-package", "n8n", "integration", "drift", "api"],
+  "license": "MIT",
+  "author": {
+    "name": "API Disk Integrations",
+    "email": "api-disk@users.noreply.github.com"
+  },
+  "homepage": "https://integrationrecovery-api.com/docs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/API-Disk-Integrations/n8n-nodes-integration-recovery.git"
+  },
+  "engines": {"node": ">=20"},
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": ["dist/credentials/IntegrationRecoveryApi.credentials.js"],
+    "nodes": ["dist/nodes/IntegrationRecovery/IntegrationRecovery.node.js"]
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@n8n/node-cli": "0.39.3",
+    "eslint": "9.29.0",
+    "typescript": "5.9.2"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}

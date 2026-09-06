@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Integration Recovery">
+  <rect width="64" height="64" rx="12" fill="#15324a"/>
+  <path d="M18 23a18 18 0 0 1 30-3l4-5v15H37l5-5a11 11 0 0 0-18 3z" fill="#62d6c4"/>
+  <path d="M46 41a18 18 0 0 1-30 3l-4 5V34h15l-5 5a11 11 0 0 0 18-3z" fill="#ffffff"/>
+</svg>
