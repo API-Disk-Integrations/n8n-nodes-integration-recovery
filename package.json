@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-integration-recovery",
-  "version": "0.0.1-local.1",
+  "version": "0.1.0",
   "description": "Action-only n8n node for Integration Recovery drift checks and repair-plan retrieval.",
   "type": "module",
   "main": "dist/index.js",

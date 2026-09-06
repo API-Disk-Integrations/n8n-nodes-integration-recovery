@@ -1,0 +1,57 @@
+name: Publish Integration Recovery n8n node (N2 bootstrap)
+
+on:
+  push:
+    tags:
+      - 'npm-v0.1.0'
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    if: >-
+      github.repository == 'API-Disk-Integrations/n8n-nodes-integration-recovery' &&
+      github.ref == 'refs/tags/npm-v0.1.0'
+    runs-on: ubuntu-latest
+    environment: npm-release
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '25.6.1'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - name: Pin the accepted npm runtime
+        run: npm install --global npm@11.9.0 --ignore-scripts --no-audit --no-fund
+      - name: Verify immutable release identity
+        run: |
+          test "$GITHUB_REPOSITORY" = 'API-Disk-Integrations/n8n-nodes-integration-recovery'
+          test "$GITHUB_REF" = 'refs/tags/npm-v0.1.0'
+          test "$(node --version)" = 'v25.6.1'
+          test "$(npm --version)" = '11.9.0'
+          test "$(node -p "require('./package.json').name")" = 'n8n-nodes-integration-recovery'
+          test "$(node -p "require('./package.json').version")" = '0.1.0'
+          test "$(npm config get registry)" = 'https://registry.npmjs.org/'
+      - name: Build, lint, test, and reproduce accepted archive
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund --install-strategy=nested
+          npm run build
+          npm run lint
+          npm test
+          mkdir -p release-dist
+          npm pack --ignore-scripts --pack-destination release-dist
+          test "$(sha256sum release-dist/n8n-nodes-integration-recovery-0.1.0.tgz | cut -d ' ' -f 1)" = '0b72cb7ab7da02903783033aa6a292dcc056c730b3f4d312200f774c588935d0'
+      - name: Publish exact first release with provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_N8N_INTEGRATION_RECOVERY_BOOTSTRAP_TOKEN }}
+        run: |
+          test -n "$NODE_AUTH_TOKEN"
+          npm publish release-dist/n8n-nodes-integration-recovery-0.1.0.tgz --access public --provenance --ignore-scripts
+
+# Inert until the exact artifact SHA placeholder is replaced after a fresh
+# different-agent local acceptance. The dedicated N2 secret is one-release
+# only and must be deleted after any terminal result; the npm token itself must
+# then be revoked by the owner and replaced by a normal Trusted Publisher.
+
